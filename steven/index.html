@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Steven Brooks — SafetyNet Sales Development Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stable:#21245C; --fresh:#00ADED; --energetic:#0045C2;
+  --passionate:#E34554; --fireball:#F05A28; --limitless:#FAB040;
+  --gray:#EDEDED; --ink:#333; --soft:#6b6f80;
+  --font:'Poppins',Arial,Helvetica,sans-serif;
+  --rail:284px; --accent:#0045C2;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font-family:var(--font);
+  font-weight:400;font-size:16px;line-height:1.6}
+
+/* ---------- shell ---------- */
+.shell{display:flex;align-items:flex-start;min-height:100vh}
+.rail{position:sticky;top:0;flex:0 0 var(--rail);width:var(--rail);height:100vh;
+  overflow-y:auto;background:#fbfbfc;border-right:1px solid #ececf1;
+  padding:26px 16px 40px;transition:flex-basis .2s,width .2s,padding .2s}
+.main{flex:1 1 auto;min-width:0}
+.wrap{max-width:880px;margin:0 auto;padding:44px 30px 130px}
+
+body.nav-closed .rail{flex-basis:0;width:0;padding-left:0;padding-right:0;
+  overflow:hidden;border-right-color:transparent}
+
+/* rail brand + toggle */
+.rb{display:flex;align-items:center;gap:10px;padding:0 10px 20px}
+.rb-t{font-size:14px;font-weight:500;color:var(--stable);line-height:1.25}
+.rb-s{display:block;font-size:12px;font-weight:200;color:var(--soft)}
+
+.navtog{position:fixed;top:14px;left:14px;z-index:40;width:42px;height:42px;
+  border:1px solid #e4e4ec;background:#fff;border-radius:12px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;padding:0}
+body.nav-closed .navtog{display:flex}
+.navtog span,.railtog span{display:block;width:17px;height:2px;background:var(--stable);
+  border-radius:2px;position:relative}
+.navtog span:before,.navtog span:after,.railtog span:before,.railtog span:after{
+  content:"";position:absolute;left:0;width:17px;height:2px;background:var(--stable);border-radius:2px}
+.navtog span:before,.railtog span:before{top:-5px}
+.navtog span:after,.railtog span:after{top:5px}
+.railtog{margin-left:auto;width:34px;height:34px;border:0;background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;opacity:.6;flex:0 0 auto}
+.railtog:hover{opacity:1}
+
+/* nav groups */
+.ng{margin:0 0 18px}
+.ng-h{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--soft);padding:0 10px 7px}
+.ni{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;
+  background:none;font-family:var(--font);font-size:14.5px;font-weight:400;
+  color:var(--stable);text-decoration:none;padding:10px 12px;border-radius:10px;
+  cursor:pointer;line-height:1.3}
+.ni:hover{background:#f0f0f5}
+.ni-d{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.3;flex:0 0 auto}
+.ni.on{background:#eef1fb;font-weight:600}
+.ni.on .ni-d{opacity:1}
+
+/* ---------- content ---------- */
+.eyebrow{font-size:14px;font-weight:400;color:var(--soft)}
+h1{font-size:27px;font-weight:500;color:var(--stable);margin:2px 0 34px;line-height:1.25}
+.view{display:none}
+.view.on{display:block}
+.vhead{margin:0 0 26px}
+.vhead .vn{font-size:15px;font-weight:200;color:var(--soft)}
+.vhead .vt{font-size:30px;font-weight:600;line-height:1.2;letter-spacing:-.01em;color:var(--accent)}
+h3{font-size:19px;font-weight:500;color:var(--stable);margin:34px 0 10px}
+h4{font-size:16px;font-weight:600;color:var(--stable);margin:24px 0 6px}
+p{margin:0 0 14px}
+ul{margin:0 0 16px;padding-left:22px}
+li{margin:0 0 8px}
+strong,b{font-weight:600;color:var(--stable)}
+a{color:var(--energetic)}
+
+/* section stepper */
+.step{display:flex;gap:10px;margin:52px 0 0;padding-top:26px;border-top:1px solid #f0f0f4}
+.step a{font-size:14px;font-weight:500;color:var(--stable);text-decoration:none;
+  background:var(--gray);padding:12px 22px;border-radius:999px}
+.step a:hover{background:var(--stable);color:#fff}
+
+/* hub tiles (single column, full width) */
+.tiles{display:block;margin-top:6px}
+.tile{display:block;width:100%;text-align:left;border:0;cursor:pointer;color:#fff;
+  font-family:var(--font);border-radius:20px;padding:30px 30px;margin:0 0 14px;
+  text-decoration:none}
+.tile .tn{display:block;font-size:15px;font-weight:200;opacity:.85;margin-bottom:4px}
+.tile .tt{display:block;font-size:30px;font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.tile:hover{filter:brightness(1.06)}
+
+/* landing chooser — one column, deliberately tall */
+.land{max-width:880px;margin:0 auto;padding:64px 30px 120px}
+.big{display:flex;flex-direction:column;justify-content:flex-end;width:100%;
+  min-height:320px;border-radius:26px;padding:40px 40px 38px;margin:0 0 20px;
+  color:#fff;text-decoration:none}
+.big:hover{filter:brightness(1.06)}
+.big .bn{display:block;font-size:17px;font-weight:200;opacity:.85;margin-bottom:6px}
+.big .bt2{display:block;font-size:44px;font-weight:600;line-height:1.05;letter-spacing:-.02em}
+.big .bd{display:block;font-size:15px;font-weight:400;opacity:.9;margin-top:14px;max-width:44ch}
+@media (max-width:640px){
+  .land{padding:34px 18px 80px}
+  .big{min-height:210px;padding:26px 24px 24px;border-radius:20px}
+  .big .bt2{font-size:30px}
+  .big .bn{font-size:15px}
+}
+@media print{
+  .land{padding:0}
+  .big{min-height:0;color:#000!important;background:none!important;padding:0;margin:0 0 18px}
+  .big .bt2{color:var(--stable)!important;font-size:18pt}
+  .big .bn,.big .bd{color:#333!important}
+}
+
+/* lead-in bullet block */
+.lead{margin:0 0 20px}
+.lead-h{font-weight:600;color:var(--stable);margin-bottom:6px}
+.lead ul{margin-bottom:0}
+
+/* note card */
+.note{background:var(--gray);border-left:5px solid var(--stable);
+  border-radius:0 14px 14px 0;padding:20px 24px;margin:24px 0}
+.note-h{font-weight:600;color:var(--stable);margin-bottom:8px;font-size:17px}
+.note p:last-child,.note ul:last-child{margin-bottom:0}
+.note.warn{border-left-color:var(--passionate)}
+.note.warn .note-h{color:var(--passionate)}
+.note.good{border-left-color:var(--fresh)}
+.note.good .note-h{color:var(--energetic)}
+
+/* score bars */
+.bars{margin:14px 0 26px}
+.bar{display:grid;grid-template-columns:1fr 46px;
+  grid-template-areas:"l v" "t t" "g g";column-gap:12px;padding:11px 0;
+  border-bottom:1px solid #f1f1f4}
+.bar:last-child{border-bottom:0}
+.bl{grid-area:l;font-size:15px;color:var(--stable);align-self:center}
+.bv{grid-area:v;font-size:20px;font-weight:600;text-align:right;align-self:center}
+.bt{grid-area:t;position:relative;height:9px;border-radius:5px;background:#e9e9ee;margin:7px 0 4px}
+.bf{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.btk{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--stable);opacity:.55}
+.bg{grid-area:g;font-size:11.5px;color:var(--soft);font-weight:200}
+.bar.total .bl{font-weight:600;font-size:16.5px}
+.bar.total{border-bottom:2px solid var(--gray);padding-bottom:14px;margin-bottom:4px}
+.bf.ok{background:var(--fresh)}   .bv.ok{color:var(--fresh)}
+.bf.mid{background:var(--limitless)} .bv.mid{color:var(--fireball)}
+.bf.low{background:var(--passionate)} .bv.low{color:var(--passionate)}
+
+/* collapsible */
+.cx{border-radius:14px;background:var(--gray);margin:0 0 12px;overflow:hidden}
+.cxh{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:none;border:0;cursor:pointer;font-family:var(--font);font-size:17px;
+  font-weight:500;color:var(--stable);text-align:left;padding:19px 24px}
+.chev{width:9px;height:9px;border-right:2px solid var(--stable);border-bottom:2px solid var(--stable);
+  transform:rotate(45deg);transition:transform .18s;flex:0 0 auto;opacity:.7}
+.cx.is-open .chev{transform:rotate(-135deg)}
+.cxb{max-height:0;overflow:hidden;transition:max-height .22s ease}
+.cx.is-open .cxb{max-height:none}
+.cxi{padding:2px 24px 22px}
+.cxi > :last-child{margin-bottom:0}
+.cxi .note{background:#fff}
+
+/* priorities */
+.prog{background:var(--gray);border-radius:14px;padding:18px 24px;margin:0 0 22px}
+.prog-t{font-size:14px;font-weight:500;color:var(--stable);margin-bottom:9px}
+.prog-b{height:10px;border-radius:5px;background:#dcdce4;overflow:hidden}
+.prog-f{height:100%;width:0;background:var(--fresh);transition:width .25s}
+.prio{display:grid;grid-template-columns:34px 40px 1fr;column-gap:10px;align-items:start;
+  padding:22px 24px;background:var(--gray);border-radius:16px;margin:0 0 12px}
+.prio.done{opacity:.5}
+.prio.done .ptitle{text-decoration:line-through}
+.pchk{cursor:pointer;padding-top:5px}
+.pchk input{position:absolute;opacity:0;width:0;height:0}
+.box{display:block;width:23px;height:23px;border-radius:7px;background:#fff;
+  border:2px solid #c9c9d4;position:relative}
+.pchk input:checked + .box{background:var(--fresh);border-color:var(--fresh)}
+.pchk input:checked + .box:after{content:"";position:absolute;left:6px;top:2px;width:6px;
+  height:12px;border-right:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(40deg)}
+.pnum{font-size:28px;font-weight:600;color:var(--stable);opacity:.28;line-height:1.05}
+.ptag{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--energetic);margin-bottom:3px}
+.ptitle{font-size:19px;font-weight:600;color:var(--stable);line-height:1.3;margin-bottom:8px}
+.pbody{font-size:15.4px}
+.pbody p:last-child,.pbody ul:last-child{margin-bottom:0}
+
+/* download card */
+.dl{display:flex;align-items:center;gap:16px;background:var(--gray);border-radius:16px;
+  padding:18px 22px;margin:0 0 10px;text-decoration:none;color:var(--stable)}
+.dl:hover{background:#e3e3ea}
+.dl-i{flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:#fff;
+  display:flex;align-items:center;justify-content:center;color:var(--energetic)}
+.dl-i svg{width:21px;height:21px}
+.dl-m{flex:1 1 auto;min-width:0}
+.dl-n{display:block;font-size:15.5px;font-weight:600;line-height:1.3}
+.dl-d{display:block;font-size:13px;font-weight:200;color:var(--soft);line-height:1.35;margin-top:2px}
+.dl-b{flex:0 0 auto;font-size:13px;font-weight:500;background:var(--stable);color:#fff;
+  padding:9px 18px;border-radius:999px}
+
+/* data explorer */
+.dx-c{margin:0 0 16px}
+.dx-q{width:100%;font-family:var(--font);font-size:16px;color:var(--stable);
+  border:1px solid #dfdfe8;border-radius:12px;padding:14px 18px;background:#fff}
+.dx-q:focus{outline:none;border-color:var(--fresh)}
+.dx-f{display:flex;gap:8px;margin:12px 0 0;flex-wrap:wrap}
+.fp{font-family:var(--font);font-size:13.5px;font-weight:500;color:var(--stable);
+  background:var(--gray);border:0;border-radius:999px;padding:9px 18px;cursor:pointer}
+.fp.is-on{background:var(--stable);color:#fff}
+.dx-n{font-size:13px;color:var(--soft);font-weight:200;margin-top:12px}
+.dxg{margin:0 0 18px}
+.dxg-h{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--soft);padding:14px 0 6px;border-bottom:1px solid #eeeef3}
+.dxr{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid #f5f5f8;font-size:15px}
+.dxr-f{color:var(--stable)}
+.dxr-w{font-size:11.5px;font-weight:200;color:var(--soft);display:block}
+.dxr-v{font-weight:600;text-align:right;white-space:nowrap}
+.v-num{color:var(--stable)}
+.v-strong{color:var(--fresh)}
+.v-weak{color:var(--passionate)}
+.v-yes{color:var(--fireball)}
+.v-no{color:var(--soft);font-weight:400}
+.dx-empty{padding:26px 0;color:var(--soft)}
+
+@media (max-width:1000px){
+  :root{--rail:270px}
+  .rail{position:fixed;left:0;top:0;z-index:35;box-shadow:0 0 0 100vmax rgba(24,26,54,.34)}
+  body.nav-closed .rail{box-shadow:none}
+  .wrap{padding:70px 20px 100px}
+  h1{font-size:23px}
+  .vhead .vt{font-size:24px}
+  .tile{padding:24px 22px}
+  .tile .tt{font-size:24px}
+  .prio{grid-template-columns:30px 1fr;column-gap:9px}
+  .pnum{display:none}
+  .dl{flex-wrap:wrap}
+}
+
+@media print{
+  @page{size:letter;margin:.6in}
+  body{font-size:11.2pt;line-height:1.45}
+  .rail,.navtog,.tiles,.step,.prog,.dx-c,#hub{display:none!important}
+  .shell{display:block}
+  .wrap{max-width:none;padding:0}
+  .view{display:block!important;page-break-before:always}
+  .view.first{page-break-before:avoid}
+  .vhead{border-bottom:2.5px solid var(--fresh);padding-bottom:8px}
+  .vhead .vt{font-size:19pt}
+  h1{font-size:20pt;margin-bottom:16px}
+  .cx{background:#f4f4f7!important}
+  .prio{background:#f4f4f7!important;break-inside:avoid;grid-template-columns:36px 1fr}
+  .cxb{max-height:none!important;overflow:visible!important}
+  .chev{display:none}
+  .cxh{padding:13px 16px 4px;font-size:13pt;break-after:avoid;break-inside:avoid}
+  .cxi{padding:0 16px 14px}
+  h3,h4{break-after:avoid}
+  p,li{orphans:2;widows:2}
+  .note,.bar,.dl{break-inside:avoid}
+  .pchk{display:none}
+  a{color:var(--stable);text-decoration:none}
+}
+</style></head>
+<body data-key="safetynet-steven">
+<button class="navtog" type="button" aria-label="Open navigation"><span></span></button>
+<div class="shell">
+  <nav class="rail">
+    <div class="rb">
+      <div class="rb-t">Steven Brooks<span class="rb-s">SafetyNet</span></div>
+      <button class="railtog" type="button" aria-label="Collapse navigation"><span></span></button>
+    </div>
+    <div class="ng"><div class="ng-h">Sections</div><a class="ni" data-go="sp-situation" href="#sp-situation" style="color:#0045C2"><span class="ni-d"></span><span>The situation</span></a><a class="ni" data-go="sp-findings" href="#sp-findings" style="color:#0045C2"><span class="ni-d"></span><span>Key findings</span></a><a class="ni" data-go="sp-strengths" href="#sp-strengths" style="color:#0045C2"><span class="ni-d"></span><span>Strengths to build on</span></a><a class="ni" data-go="sp-management" href="#sp-management" style="color:#0045C2"><span class="ni-d"></span><span>Sales management development</span></a><a class="ni" data-go="sp-priorities" href="#sp-priorities" style="color:#0045C2"><span class="ni-d"></span><span>Action priorities</span></a><a class="ni" data-go="sp-outcomes" href="#sp-outcomes" style="color:#0045C2"><span class="ni-d"></span><span>Expected outcomes</span></a></div>
+  </nav>
+  <div class="main"><div class="wrap">
+    <div class="eyebrow">SafetyNet</div>
+    <h1>Steven Brooks — Sales Development Plan</h1>
+    
+    <section class="view first" id="sp-situation" data-accent="#0045C2"><div class="vhead"><div class="vn">Overview</div><div class="vt">The situation</div></div><p>SafetyNet is asking two things to change at the same time. The business is moving from consulting-led revenue to software-led revenue, and 28 years of selling is moving from the owner to the company's first salesperson. Both assessments say the same thing from different directions: the company has a reputation, a referral engine and a product it believes in, and it has almost none of the structure that would let a second person sell any of it. Sales capability across the two people assessed averages 34 against a target of 67, and the competencies furthest from target are precisely the four the software sale depends on — reaching a decision-maker, uncovering a compelling reason to change, discussing money, and getting a decision. The improvement available is real, at 45 percent, and both people assess as coachable at target. What is missing is not willingness. It is a defined process, a shared system, and a management rhythm that has never had to exist.</p><div class="note"><div class="note-h">How to read every number in this plan</div><p>Each score is measured against a target for that competency, shown as the tick mark on the bar. Targets come from OMG's data on the level a competency has to reach before it stops limiting results — they are not averages, so scoring below one is common. Where both people were assessed on a competency, the figure shown is the average of the two.</p></div><div class="step"><a href="#sp-findings">Next: Key findings</a></div></section><section class="view" id="sp-findings" data-accent="#0045C2"><div class="vhead"><div class="vn">Assessment</div><div class="vt">Key findings</div></div><p>These are the eight competency gaps that matter most to the software pivot and the handoff, in order of distance from target. The figure is the average across both people assessed.</p><div class="bars"><div class="bar"><div class="bl">Consultative Selling</div><div class="bt"><span class="bf low" style="width:12%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">12</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Qualifying</div><div class="bt"><span class="bf low" style="width:14%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">14</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Closing</div><div class="bt"><span class="bf low" style="width:26%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">26</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Hunting</div><div class="bt"><span class="bf low" style="width:28%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">28</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Supportive Buy Cycle</div><div class="bt"><span class="bf low" style="width:29%"></span><span class="btk" style="left:71%"></span></div><div class="bv low">29</div><div class="bg">target 71</div></div><div class="bar"><div class="bl">Sales Process</div><div class="bt"><span class="bf low" style="width:32%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">32</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Selling Value</div><div class="bt"><span class="bf low" style="width:39%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">39</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Sales Technology</div><div class="bt"><span class="bf low" style="width:40%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">40</div><div class="bg">target 67</div></div></div><h3>What each one means for the goal</h3><div class="cx is-open"><button class="cxh" type="button"><span>Consultative Selling — 12 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>The lowest score in the whole assessment. Consultative selling is the ability to get a prospect to describe their own problem, in their own words, at a cost they can quantify. Both assessments instead show a pattern of educating and explaining.</p><p>This is the single biggest obstacle to selling software against an incumbent. A prospect who has been educated knows what the product does. A prospect who has been questioned properly knows what staying put is costing them. Only the second one switches.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Qualifying — 14 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>Qualifying is knowing, before you invest time, whether there is a budget, a decision-maker, a decision process and a real reason to act. At 14 the company is largely finding that out by proceeding.</p><p>The clearest example is the five-year software conversation with the large defense customer. Interest has been established. Budget ownership, decision process and a decision date have not.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Closing — 26 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>Both people scored within a point of each other here, which makes this a company pattern rather than a personal weakness. Both assessments flag the belief that a prospect who wants to think it over will eventually buy.</p><p>Software evaluations do not stall politely and then resume. They go quiet while the incumbent stays installed.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Hunting — 28 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>This average hides the widest split in the assessment: one of the two people scores 57 and is classed as a potential hunter, the other scores 0. All of the company's new business has come from referral, partnership and reputation, which has worked for 28 years.</p><p>It stops working when the goal is a specific revenue number by a specific date. Referrals arrive on their own schedule.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Supportive Buy Cycle — 29 against a target of 71</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>Both people scored exactly 29. This measures how they buy in their own lives — and both think purchases over, research them, and comparison shop before deciding.</p><p>Sellers who buy that way extend the same courtesy to their prospects without noticing. It is the quiet reason deals take years rather than quarters, and because it is identical across both people it will reproduce itself in the next person hired.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Sales Process — 32 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>A 43-point split between the two people, which tells you there is no shared definition of how a SafetyNet deal is won. One person is following a process that exists only in their own head; the other is following her own read of it.</p><p>Everything else in this plan depends on fixing this first. You cannot hold someone accountable to a process that has never been written down, and you cannot coach a stage you have not defined.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Selling Value — 39 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>Both people scored exactly 39. Selling value is the ability to make the cost of the current situation concrete enough that price becomes a secondary question.</p><p>For consulting, reputation has carried this. For software, where the objection is "we already have one" followed by "switching is too much work," reputation is not enough — the prospect has to be able to put a number on staying.</p></div></div></div><div class="cx"><button class="cxh" type="button"><span>Sales Technology — 40 against a target of 67</span><span class="chev"></span></button><div class="cxb"><div class="cxi"><p>Another wide split. One person is a capable daily CRM user scoring 80; the other scores 0 and is not in a CRM at all. Social selling is near zero for both.</p><p>The consequence is that the company has no shared view of its own pipeline. The good news is that the capability already exists in the building — it simply is not where the pipeline is being managed.</p></div></div></div><div class="note"><div class="note-h">The pattern worth noticing</div><p>Four of these eight are effectively identical across both people — Supportive Buy Cycle at 29 and 29, Selling Value at 39 and 39, Closing at 27 and 26, and overall tactical capability at 32 and 35. When two people who have never worked a sales process together score the same on the same competencies, that is not a coincidence about them. It is how the company sells, and it will show up in the next hire unless it is addressed at the level of process rather than personality.</p></div><div class="step"><a href="#sp-situation">Back to The situation</a><a href="#sp-strengths">Next: Strengths to build on</a></div></section><section class="view" id="sp-strengths" data-accent="#0045C2"><div class="vhead"><div class="vn">Assessment</div><div class="vt">Strengths to build on</div></div><p>Five things in these assessments are genuine assets, and they are the reason this is a development plan rather than a rebuild.</p><div class="bars"><div class="bar"><div class="bl">Outlook</div><div class="bt"><span class="bf ok" style="width:100%"></span><span class="btk" style="left:75%"></span></div><div class="bv ok">100</div><div class="bg">target 75</div></div><div class="bar"><div class="bl">Video Proficient</div><div class="bt"><span class="bf ok" style="width:78%"></span><span class="btk" style="left:67%"></span></div><div class="bv ok">78</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Coachable</div><div class="bt"><span class="bf ok" style="width:75%"></span><span class="btk" style="left:75%"></span></div><div class="bv ok">75</div><div class="bg">target 75</div></div><div class="bar"><div class="bl">Supportive Beliefs</div><div class="bt"><span class="bf mid" style="width:68%"></span><span class="btk" style="left:83%"></span></div><div class="bv mid">68</div><div class="bg">target 83</div></div><div class="bar"><div class="bl">Figure-It-Out Factor</div><div class="bt"><span class="bf low" style="width:56%"></span><span class="btk" style="left:75%"></span></div><div class="bv low">56</div><div class="bg">target 75</div></div><div class="bar"><div class="bl">Working Remotely</div><div class="bt"><span class="bf mid" style="width:52%"></span><span class="btk" style="left:67%"></span></div><div class="bv mid">52</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Account Management</div><div class="bt"><span class="bf low" style="width:50%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">50</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Relationship Building</div><div class="bt"><span class="bf mid" style="width:44%"></span><span class="btk" style="left:50%"></span></div><div class="bv mid">44</div><div class="bg">target 50</div></div></div><h4>1. Both people are coachable, and both are optimistic</h4><p>Coachability comes in at 75, exactly on target, for both people independently. Outlook is 100 against a target of 75 for both. Those two together are the conditions under which development actually sticks — the willingness is present and neither person is discouraged about where the business is headed.</p><h4>2. The company does not discount</h4><p>Both assessments show a focus on value over price, a high tolerance for large numbers, and an unwillingness to put out an inappropriate quote. One of the two also shows a specific strength in protecting margins and in avoiding time spent on unqualified prospects.</p><div class="note"><div class="note-h">Protect this deliberately</div><p>In an incumbent-displacement software sale the standing temptation is to discount your way in. SafetyNet has a 28-year pricing culture that does not do that, and it is shared rather than resting on one person. Nothing in this plan should train it out.</p></div><h4>3. The two people are strong in opposite places</h4><p>The widest gaps between them are not a problem to fix — they are a teaching resource. Where one is at 80, the other is at 0, and vice versa:</p><ul><li><b>CRM discipline</b> — 80 points apart: the rep at 80, the owner at 0</li><li><b>Working independently</b> — 72 points apart: the rep at 88, the owner at 16</li><li><b>Motivation</b> — 67 points apart: the rep at 70, the owner at 3</li><li><b>Doesn't Need Approval</b> — 60 points apart: the owner at 60, the rep at 0</li><li><b>Hunting</b> — 57 points apart: the rep at 57, the owner at 0</li></ul><p>That means most of what has to be built can be modeled inside the company rather than taught from outside. The system side of selling — living in a CRM, working independently, keeping activity up without supervision — is already strong in one seat. The conviction side — commitment, willingness to be disliked in a sales conversation, drive for the result — is already strong in the other.</p><h4>4. Prospecting will actually happen</h4><p>One of the two assessments classes that person as a potential hunter, with strengths in picking up the phone, reaching the target prospect, and getting referrals from a network, alongside rejection tolerance above target. Prospecting is the activity most new salespeople quietly abandon. This one will not.</p><h4>5. Video is already a strength, and the reputation is real</h4><p>Video proficiency averages 78 against a target of 67, which matters for a California company selling nationally. And the reputation the business has built is not in dispute — it is what has produced referrals, the partner relationships, and a customer list that includes some of the largest organizations in the country.</p><div class="step"><a href="#sp-findings">Back to Key findings</a><a href="#sp-management">Next: Sales management development</a></div></section><section class="view" id="sp-management" data-accent="#0045C2"><div class="vhead"><div class="vn">Leadership</div><div class="vt">Sales management development</div></div><p>The owner has been the entire sales department for 28 years and has never had a salesperson to coach, motivate, hold accountable or hire. Read the management scores with that in front of them.</p><div class="bars"><div class="bar"><div class="bl">Coaching</div><div class="bt"><span class="bf low" style="width:19%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">19</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Motivating</div><div class="bt"><span class="bf low" style="width:20%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">20</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Accountability</div><div class="bt"><span class="bf low" style="width:30%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">30</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Recruiting</div><div class="bt"><span class="bf low" style="width:10%"></span><span class="btk" style="left:67%"></span></div><div class="bv low">10</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Pipeline Management</div><div class="bt"><span class="bf mid" style="width:65%"></span><span class="btk" style="left:67%"></span></div><div class="bv mid">65</div><div class="bg">target 67</div></div><div class="bar"><div class="bl">Team-Focused</div><div class="bt"><span class="bf mid" style="width:63%"></span><span class="btk" style="left:67%"></span></div><div class="bv mid">63</div><div class="bg">target 67</div></div></div><h4>The one management habit that already exists</h4><p>Pipeline Management at 65 sits a single point off target. Underneath it: reviewing pipeline regularly, looking at the right metrics, and focusing attention on new and stalled business all register as strengths. Nobody taught that, and it is the foundation the rest of this plan is built on — it is the container everything else goes into.</p><p>Sales Management Posturing is also above target at 71, which means the confidence and composure the role requires are already there.</p><h4>Where the coaching investment is needed</h4><p>Coaching at 19, Motivating at 20, Accountability at 30 and Recruiting at 10 are the four unpracticed muscles. They are low because they have never been used, not because the capacity is absent — passion for coaching, handling joint sales calls, and giving recognition all show as existing strengths, and the team already reports respecting and trusting the owner.</p><div class="lead"><div class="lead-h">The three specific things to develop, in order:</div><ul><li><b>Debriefing instead of demonstrating.</b> The current transfer mechanism is having the salesperson watch. That only passes on what she happens to notice, and it requires the owner in the room — which is the thing he is trying to stop. A written debrief after every joint call transfers more in twenty minutes than three observed meetings do, and it works when he is not there.</li><li><b>Not rescuing the deal.</b> The assessment flags a reluctance to let a salesperson lose a piece of business. Paired with the plan of having her run meetings while he joins as the technical expert, the predictable result is that he takes the wheel when it gets uncomfortable, the revenue lands, and nothing transfers. This needs to be a written rule, not an intention.</li><li><b>Motivating to her wiring rather than his.</b> The two motivational profiles are opposite — one extrinsic, one intrinsic — and the assessment shows recognition sitting at the top of one list and the bottom of the other. Sincere praise will land flat and be misread as indifference. What works is a target she sets herself and a scoreboard she owns.</li></ul></div><h4>The hiring gap is a present problem, not a future one</h4><p>Recruiting at 10, with hiring criteria and interviewing both showing as weaknesses, means there is currently no method for judging whether the first salesperson is working out and no method for hiring the next one. The same capability is what the general manager hire will require. It is worth building once and using twice.</p><div class="step"><a href="#sp-strengths">Back to Strengths to build on</a><a href="#sp-priorities">Next: Action priorities</a></div></section><section class="view" id="sp-priorities" data-accent="#0045C2"><div class="vhead"><div class="vn">The plan</div><div class="vt">Action priorities</div></div><p>Six priorities in this sequence. The order carries more weight than the content: you cannot hold anyone accountable to a process that does not exist, you cannot manage a pipeline without a system, and you cannot coach a skill you have not defined. This works from the bottom of the triangle up — strategy, then structure, then staff, then skills.</p><div class="prog"><div class="prog-t prog-c">0 of 6 underway</div><div class="prog-b"><div class="prog-f"></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p1"><span class="box"></span></label><div class="pnum">1</div><div class="pmain"><div class="ptag">Strategy — first 30 days</div><div class="ptitle">Write down the two sales processes</div><div class="pbody"><p>Sales Process averages 32 against a target of 67, and the two people are 43 points apart — there is no shared definition to work from. The consulting sale and the software sale are also not the same sale: different buyer, different objection, different milestones.</p><p>One page each. Stages, and the milestone that has to be true before a deal advances. Make reaching the actual decision-maker an explicit milestone in both, because both assessments flag the belief that you have to work through a buyer or procurement contact first.</p><p><b>Done looks like:</b> two written processes the salesperson can follow without asking what happens next.</p></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p2"><span class="box"></span></label><div class="pnum">2</div><div class="pmain"><div class="ptag">Structure — first 60 days</div><div class="ptitle">One CRM, and pipeline review as a weekly rhythm</div><div class="pbody"><p>Sales Technology averages 40 against a target of 67, and CRM capability is 80 points apart between the two people. The skill already exists in the building; it is just not where the pipeline is managed. Give the build to the person who scores 80 and configure it to the two processes from priority one, so the stages in the system match the stages on paper.</p><p>Then a standing weekly pipeline review on the calendar — not on demand, not when something looks stuck. Pipeline Management at 65 is the strongest management competency in the assessment and it currently has nothing to work on.</p></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p3"><span class="box"></span></label><div class="pnum">3</div><div class="pmain"><div class="ptag">Structure and staff — ongoing from day 30</div><div class="ptitle">Replace watching with debriefing</div><div class="pbody"><p>Coaching scores 19 against a target of 67. A fixed weekly coaching block, protected like a customer meeting. Joint calls where the salesperson runs the meeting and the owner is the technical resource — the role he already handles well according to his own assessment.</p><p><b>One rule, in writing:</b> he does not take the wheel mid-meeting. If a meeting goes badly it goes badly, and it gets debriefed afterward. This is the rule that makes the rest of the plan possible.</p><p>Every joint call gets a written debrief — what she was trying to accomplish, what actually happened, what she would do differently. Twenty minutes.</p></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p4"><span class="box"></span></label><div class="pnum">4</div><div class="pmain"><div class="ptag">Skills — from day 60, once one through three exist</div><div class="ptitle">Build qualifying, decision-maker access and the money conversation</div><div class="pbody"><p>Only now. This is where most companies want to start, and starting here is why most sales training does not stick. Four competencies, all of them load-bearing for the software sale:</p><ul><li>Consultative Selling, averaging 12 — getting the prospect to describe the problem instead of being told about the product</li><li>Qualifying, averaging 14 — budget, decision-maker, decision process, reason to act, established before the time is spent</li><li>Comfortable Discussing Money, averaging 42 against a target of 66</li><li>Closing, averaging 26 — asking for a decision instead of accepting a think-it-over</li></ul><p>Run it against a live account rather than in the abstract. The five-year software conversation with the large defense customer is the obvious candidate: interest is established, and budget ownership and a decision date are not. If this work moves that account, the work is landing.</p></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p5"><span class="box"></span></label><div class="pnum">5</div><div class="pmain"><div class="ptag">Staff — 30, 60 and 90 days</div><div class="ptitle">Put checkpoints on the staffing bet, and build selection capability</div><div class="pbody"><p>Recruiting scores 10, with hiring criteria and interviewing both weak. The first salesperson was moved into the role rather than hired for it, which was the sensible move with the person available. It is still an untested bet and it deserves a checkpoint rather than a hope.</p><p>Agree now what her prospecting activity should look like at 30, 60 and 90 days — conversations held, meetings set, decision-makers reached — and review it against what actually happens. Behavior, not attitude. Coachability is at target, so if the activity is there the skills follow.</p><p>Build the selection capability alongside it. It is needed for the general manager hire regardless of how this one goes.</p></div></div></div><div class="prio"><label class="pchk"><input type="checkbox" data-k="p6"><span class="box"></span></label><div class="pnum">6</div><div class="pmain"><div class="ptag">Strategy — quarter two</div><div class="ptitle">Turn the partner channel into something managed</div><div class="pbody"><p>Hunting averages 28 against a target of 67, and the company's own history says partnering is where most of the success has come from. Today that channel is passive — partners bring work when SafetyNet happens to come to mind.</p><p>Name the partners, decide what a referral ask actually sounds like, put a cadence on it, and set a number. Relationship Building at 44 is the strongest tactical area either person has, so this is the highest-yield use of existing capability rather than new capability.</p><p>It also answers the credibility problem a twelve-person company faces when selling software at this scale: a partner's endorsement removes the objection before the first meeting.</p></div></div></div><div class="step"><a href="#sp-management">Back to Sales management development</a><a href="#sp-outcomes">Next: Expected outcomes</a></div></section><section class="view" id="sp-outcomes" data-accent="#0045C2"><div class="vhead"><div class="vn">Expectations</div><div class="vt">Expected outcomes</div></div><p>OMG measures how much improvement is realistically available and how supportive the surrounding conditions are for capturing it.</p><div class="bars"><div class="bar"><div class="bl">Improvement opportunity available</div><div class="bt"><span class="bf ok" style="width:45%"></span><span class="btk" style="left:0%"></span></div><div class="bv ok">45</div><div class="bg">target 0</div></div><div class="bar"><div class="bl">Supportive conditions for development</div><div class="bt"><span class="bf ok" style="width:33%"></span><span class="btk" style="left:0%"></span></div><div class="bv ok">33</div><div class="bg">target 0</div></div><div class="bar"><div class="bl">Coachability</div><div class="bt"><span class="bf ok" style="width:75%"></span><span class="btk" style="left:75%"></span></div><div class="bv ok">75</div><div class="bg">target 75</div></div></div><p>Forty-five percent improvement opportunity is meaningful — that is real performance sitting on the table rather than a rounding error, and it is consistent across both people at 44 and 46. Coachability at target is the number that predicts whether the investment returns.</p><p>Thirty-three percent on supportive conditions is the honest part. It says progress here will need structure and outside pressure rather than self-propulsion. Left alone, this does not happen on its own — which is the normal reading for a company that has never had a sales system to be accountable to, and not a comment on either person's character.</p><h3>A realistic timeline</h3><div class="lead"><div class="lead-h">First 90 days — infrastructure only, no skills training:</div><ul><li>Two written sales processes</li><li>One CRM configured to those processes</li><li>A standing weekly pipeline review</li><li>A standing weekly coaching and debrief block</li><li>Agreed activity numbers at 30, 60 and 90 days</li></ul></div><div class="lead"><div class="lead-h">Months 4 through 9 — skill work against live accounts:</div><ul><li>Qualifying and decision-maker access</li><li>Quantifying the cost of staying with an incumbent</li><li>Money conversations and asking for decisions</li><li>The partner channel run as a managed pipeline</li></ul></div><div class="lead"><div class="lead-h">Months 10 through 18 — the handoff becomes real:</div><ul><li>The salesperson running meetings with the owner as a technical resource, not a closer</li><li>A pipeline the owner can read without being inside the deals</li><li>A selling function that would keep running if he stepped away</li></ul></div><div class="note"><div class="note-h">What has to be true for this to work</div><p>Two behaviors are worth more to this plan than anything on the skills list. The weekly blocks survive the weeks when the trade show, the software and the consulting delivery all land at once. And when a deal is going sideways on a call the owner is sitting on, he leaves his hands off the wheel.</p></div><div class="step"><a href="#sp-priorities">Back to Action priorities</a></div></section>
+  </div></div>
+</div>
+<script>
+(function(){
+  var body=document.body;
+  var KEY=body.getAttribute('data-key')||'omg';
+
+  /* ---- rail open/closed, remembered ---- */
+  function store(k,v){ try{localStorage.setItem(KEY+':'+k,v)}catch(e){} }
+  function read(k){ try{return localStorage.getItem(KEY+':'+k)}catch(e){return null} }
+  var narrow=window.matchMedia('(max-width:1000px)').matches;
+  var saved=read('nav');
+  if(saved==='closed'||(saved===null&&narrow)) body.classList.add('nav-closed');
+  function toggleNav(){
+    body.classList.toggle('nav-closed');
+    store('nav', body.classList.contains('nav-closed')?'closed':'open');
+  }
+  [].forEach.call(document.querySelectorAll('.navtog,.railtog'),function(b){
+    b.addEventListener('click',toggleNav);
+  });
+
+  /* ---- routing ---- */
+  var views=[].slice.call(document.querySelectorAll('.view'));
+  var items=[].slice.call(document.querySelectorAll('.ni'));
+  function show(id){
+    var hit=null;
+    views.forEach(function(v){
+      var on=(v.id===id); v.classList.toggle('on',on); if(on) hit=v;
+    });
+    var hub=document.getElementById('hub');
+    if(!hit&&hub){ hub.classList.add('on'); hit=hub; id='hub'; }
+    if(!hit&&views.length){ views[0].classList.add('on'); hit=views[0]; id=views[0].id; }
+    items.forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-go')===id); });
+    var accent=hit?hit.getAttribute('data-accent'):null;
+    document.documentElement.style.setProperty('--accent', accent||'#0045C2');
+    if(narrow&&!body.classList.contains('nav-closed')){
+      body.classList.add('nav-closed'); store('nav','closed');
+    }
+  }
+  function route(scroll){
+    show((location.hash||'').replace('#','')||'hub');
+    if(scroll) window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',function(){route(true)});
+
+  document.addEventListener('click',function(e){
+    var h=e.target.closest?e.target.closest('.cxh'):null;
+    if(h){ h.parentNode.classList.toggle('is-open'); }
+  });
+
+  /* ---- checkable priorities ---- */
+  function load(){ try{return JSON.parse(localStorage.getItem(KEY+':prio')||'{}')}catch(e){return {}} }
+  function save(o){ try{localStorage.setItem(KEY+':prio',JSON.stringify(o))}catch(e){} }
+  var boxes=[].slice.call(document.querySelectorAll('.prio input[type=checkbox]'));
+  function paint(){
+    var n=0;
+    boxes.forEach(function(b){
+      b.closest('.prio').classList.toggle('done',b.checked); if(b.checked) n++;
+    });
+    var f=document.querySelector('.prog-f'), t=document.querySelector('.prog-c');
+    if(f&&boxes.length) f.style.width=(n/boxes.length*100)+'%';
+    if(t) t.textContent=n+' of '+boxes.length+' underway';
+  }
+  var st=load();
+  boxes.forEach(function(b){
+    if(st[b.getAttribute('data-k')]) b.checked=true;
+    b.addEventListener('change',function(){
+      var o=load(); o[b.getAttribute('data-k')]=b.checked; save(o); paint();
+    });
+  });
+  paint();
+
+  /* ---- data explorer ---- */
+  var ROWS=window.__OMG_ROWS__;
+  var host=document.querySelector('.dx-rows');
+  if(ROWS&&host){
+    var q=document.querySelector('.dx-q');
+    var count=document.querySelector('.dx-count');
+    var who='';
+    function vcls(v){
+      var s=String(v);
+      if(/^-?\d+(\.\d+)?$/.test(s)) return 'v-num';
+      if(s==='Strong') return 'v-strong';
+      if(s==='Weak') return 'v-weak';
+      if(s==='Yes') return 'v-yes';
+      if(s==='No') return 'v-no';
+      return 'v-num';
+    }
+    function esc(s){ return String(s).replace(/[&<>]/g,function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]; }); }
+    function render(){
+      var term=(q.value||'').trim().toLowerCase();
+      var hits=ROWS.filter(function(r){
+        if(who&&r[0]!==who) return false;
+        if(!term) return true;
+        return (r[1]+' '+r[2]+' '+r[3]).toLowerCase().indexOf(term)>-1;
+      });
+      count.textContent=hits.length+' of '+ROWS.length+' findings';
+      if(!hits.length){ host.innerHTML='<div class="dx-empty">Nothing matches that.</div>'; return; }
+      var groups={}, order=[];
+      hits.forEach(function(r){
+        if(!groups[r[1]]){ groups[r[1]]=[]; order.push(r[1]); }
+        groups[r[1]].push(r);
+      });
+      host.innerHTML=order.map(function(g){
+        return '<div class="dxg"><div class="dxg-h">'+esc(g)+'</div>'+
+          groups[g].map(function(r){
+            return '<div class="dxr"><div class="dxr-f">'+esc(r[2])+
+              '<span class="dxr-w">'+esc(r[0])+'</span></div>'+
+              '<div class="dxr-v '+vcls(r[3])+'">'+esc(r[3])+'</div></div>';
+          }).join('')+'</div>';
+      }).join('');
+    }
+    q.addEventListener('input',render);
+    [].forEach.call(document.querySelectorAll('.fp'),function(b){
+      b.addEventListener('click',function(){
+        [].forEach.call(document.querySelectorAll('.fp'),function(x){x.classList.remove('is-on')});
+        b.classList.add('is-on'); who=b.getAttribute('data-who')||''; render();
+      });
+    });
+    render();
+  }
+
+  route(false);
+})();
+</script>
+</body></html>
